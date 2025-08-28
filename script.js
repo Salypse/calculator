@@ -34,13 +34,13 @@ function operate(num1, operator, num2) {
 //Sets first or second operator based on number button clicked
 numberButtons.forEach((button) => {
     button.addEventListener("click", () => {
-        if (firstOperand === "") {
-            firstOperand = button.textContent;
-            calculatorDisplayText.textContent += firstOperand;
+        if (!operator) {
+            firstOperand += button.textContent;
+            updateDisplayText();
         } 
-        else if (secondOperand === "" && operator) {
-            secondOperand = button.textContent;
-            calculatorDisplayText.textContent += secondOperand;
+        else if (firstOperand && operator) {
+            secondOperand += button.textContent;
+            updateDisplayText();
         }
     })
 })
@@ -50,7 +50,7 @@ operatorButtons.forEach((button) => {
     button.addEventListener("click", () => {
         if (firstOperand !== "" && operator === "") {
             operator = button.textContent;
-            calculatorDisplayText.textContent += ` ${operator} `
+            updateDisplayText()
         }
         else if (firstOperand && operator && secondOperand) {
             firstOperand = operate(firstOperand, operator, secondOperand)
@@ -70,19 +70,27 @@ equalButton.addEventListener("click", () => {
 
 //Clear current equation by removing display text and resetting the operands and operator
 clearButton.addEventListener("click", () => {
-    resetDisplay()
-})
-
-
-function resetDisplay() {
     calculatorDisplayText.textContent = "";
     firstOperand = operator = secondOperand = "";
-}
+})
 
-
+//Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
 function resetCurrentEquation(operand=null, newOperator=null) {
     if (operand && newOperator) {
         calculatorDisplayText.textContent = `${operand} ${newOperator} `;
         secondOperand = ""
     }
 }
+
+function updateDisplayText() {
+    calculatorDisplayText.textContent = `${firstOperand} ${operator} ${secondOperand}`;
+}
+
+
+//TODO
+//Make divide function not be disible by 0
+//Round total to 2 decimal places
+
+//Possible taska
+//keyboardd support
+//backspace 
