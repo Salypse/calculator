@@ -26,8 +26,7 @@ p {
     border: 8px solid #e9c46a;
     border-radius: 8px;
 }
-
-.calculator-display {
+#calculator-display {
     background-color: #264653;
     border: 4px solid #e9c46a;
     border-radius: 8px;
@@ -49,7 +48,7 @@ p {
     flex-wrap: wrap;
 }
 
-.number-button {
+.calculator-buttons *{
     font-size: 48px;
     font-weight: 900;
     width: 100px;
@@ -61,4 +60,19 @@ p {
     border-radius: 8px;
 
     cursor: pointer;
+}
+
+#calculator-display-text {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    color: #2a9d8f;
+    font-size: 48px;
+    font-weight: 700;
+
+    width: 100%;
+    height: auto;
+
+    margin: 16px;
 }
