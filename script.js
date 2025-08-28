@@ -38,7 +38,7 @@ numberButtons.forEach((button) => {
             firstOperand = button.textContent;
             calculatorDisplayText.textContent += firstOperand;
         } 
-        else if (secondOperand === "" && operator !== "") {
+        else if (secondOperand === "" && operator) {
             secondOperand = button.textContent;
             calculatorDisplayText.textContent += secondOperand;
         }
@@ -50,8 +50,12 @@ operatorButtons.forEach((button) => {
     button.addEventListener("click", () => {
         if (firstOperand !== "" && operator === "") {
             operator = button.textContent;
-            calculatorDisplayText.textContent += " " + operator + " "
-            console.log(`Operator is ${operator}`);
+            calculatorDisplayText.textContent += ` ${operator} `
+        }
+        else if (firstOperand && operator && secondOperand) {
+            firstOperand = operate(firstOperand, operator, secondOperand)
+            operator = button.textContent
+            resetCurrentEquation(firstOperand, operator)
         }
     })
 })
@@ -63,3 +67,22 @@ equalButton.addEventListener("click", () => {
         calculatorDisplayText.textContent = result;
     }
 })
+
+//Clear current equation by removing display text and resetting the operands and operator
+clearButton.addEventListener("click", () => {
+    resetDisplay()
+})
+
+
+function resetDisplay() {
+    calculatorDisplayText.textContent = "";
+    firstOperand = operator = secondOperand = "";
+}
+
+
+function resetCurrentEquation(operand=null, newOperator=null) {
+    if (operand && newOperator) {
+        calculatorDisplayText.textContent = `${operand} ${newOperator} `;
+        secondOperand = ""
+    }
+}
