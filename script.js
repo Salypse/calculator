@@ -14,6 +14,9 @@ const multiply = (num1, num2) => num1 * num2;
 const divide = (num1, num2) => num1 / num2;
 
 function operate(num1, operator, num2) {
+    num1 = parseInt(num1)
+    num2 = parseInt(num2)
+
     switch(operator) {
         case "+" :
             return add(num1, num2);
@@ -34,12 +37,10 @@ numberButtons.forEach((button) => {
         if (firstOperand === "") {
             firstOperand = button.textContent;
             calculatorDisplayText.textContent += firstOperand;
-            console.log(`First operand is ${firstOperand}`)
         } 
         else if (secondOperand === "" && operator !== "") {
             secondOperand = button.textContent;
             calculatorDisplayText.textContent += secondOperand;
-            console.log(`Second operand is ${secondOperand}`)
         }
     })
 })
@@ -53,4 +54,12 @@ operatorButtons.forEach((button) => {
             console.log(`Operator is ${operator}`);
         }
     })
+})
+
+//Solves equation when = button is clicked
+equalButton.addEventListener("click", () => {
+    if (firstOperand && operator && secondOperand) {
+        result = operate(firstOperand, operator, secondOperand);
+        calculatorDisplayText.textContent = result;
+    }
 })
