@@ -14,18 +14,18 @@ const multiply = (num1, num2) => num1 * num2;
 const divide = (num1, num2) => (num2 === 0 ? (updateDisplayText(true),null) : num1 / num2);
 
 function operate(num1, operator, num2) {
-    num1 = parseInt(num1)
-    num2 = parseInt(num2)
+    num1 = parseFloat(num1)
+    num2 = parseFloat(num2)
 
     switch(operator) {
         case "+" :
-            return add(num1, num2);
+            return Math.round(add(num1, num2) * 100) / 100;
         case "-":
-            return subtract(num1, num2);
+            return Math.round(subtract(num1, num2) * 100) / 100;
         case "*":
-            return multiply(num1, num2);
+            return Math.round(multiply(num1, num2) * 100) / 100;
         case "/":
-            return divide(num1, num2);
+            return Math.round(divide(num1, num2) * 100) / 100;
         default :
             return "Invalid Operator"
     }
