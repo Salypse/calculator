@@ -3,6 +3,7 @@ const numberButtons = document.querySelectorAll(".number-button")
 const operatorButtons = document.querySelectorAll(".operator-button")
 const clearButton = document.querySelector("#calculator-clear")
 const equalButton = document.querySelector("#calculator-equal")
+const pointButton = document.querySelector("#calculator-point")
 
 let firstOperand = "";
 let secondOperand = "";
@@ -36,12 +37,11 @@ numberButtons.forEach((button) => {
     button.addEventListener("click", () => {
         if (!operator) {
             firstOperand += button.textContent;
-            updateDisplayText();
         } 
         else if (firstOperand && operator) {
             secondOperand += button.textContent;
-            updateDisplayText();
         }
+        updateDisplayText()
     })
 })
 
@@ -76,6 +76,17 @@ clearButton.addEventListener("click", () => {
     updateDisplayText()
 })
 
+//Adds a decimal to a number
+pointButton.addEventListener("click", () => {
+    if (firstOperand && !firstOperand.includes(".") && !operator) {
+        firstOperand += "."
+    }
+    else if(secondOperand && !secondOperand.includes(".")) {
+        secondOperand += "."
+    }
+    updateDisplayText()
+})
+
 //Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
 function resetCurrentEquation(operand=null, newOperator=null) {
     if (operand && newOperator) {
@@ -92,7 +103,7 @@ function updateDisplayText(isError=false) {
     }
 }
 
-//Allow user to press backspace key to undo last input
+//Allow keyboard input for backspace to remove last input and numbers and operators for same as click functions
 document.addEventListener("keydown", function(event) {
     if (event.key === "Backspace") {
         if (firstOperand && operator && secondOperand) {
