@@ -38,7 +38,7 @@ numberButtons.forEach((button) => {
         if (!operator) {
             firstOperand += button.textContent;
         } 
-        else if (firstOperand && operator) {
+        else if (operator) {
             secondOperand += button.textContent;
         }
         updateDisplayText()
@@ -48,21 +48,21 @@ numberButtons.forEach((button) => {
 //Sets operator with whatever button is clicked
 operatorButtons.forEach((button) => {
     button.addEventListener("click", () => {
-        if (firstOperand !== "" && operator === "") {
+        if (!operator) {
             operator = button.textContent;
             updateDisplayText()
         }
-        else if (firstOperand && operator && secondOperand) {
+        else if (operator) {
             firstOperand = operate(firstOperand, operator, secondOperand)
             operator = button.textContent
-            resetCurrentEquation(firstOperand, operator)
+            handleChainOperation(firstOperand, operator)
         }
     })
 })
 
 //Solves equation when = button is clicked
 equalButton.addEventListener("click", () => {
-    if (firstOperand && operator && secondOperand) {
+    if (secondOperand) {
         let result = operate(firstOperand, operator, secondOperand);
         if (result !== null){
             calculatorDisplayText.textContent = result;
@@ -78,17 +78,17 @@ clearButton.addEventListener("click", () => {
 
 //Adds a decimal to a number
 pointButton.addEventListener("click", () => {
-    if (firstOperand && !firstOperand.includes(".") && !operator) {
+    if (!firstOperand.includes(".") && !operator) {
         firstOperand += "."
     }
-    else if(secondOperand && !secondOperand.includes(".")) {
+    else if(operator && !secondOperand.includes(".")) {
         secondOperand += "."
     }
     updateDisplayText()
 })
 
 //Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
-function resetCurrentEquation(operand=null, newOperator=null) {
+function handleChainOperation(operand=null, newOperator=null) {
     if (operand && newOperator) {
         calculatorDisplayText.textContent = `${operand} ${newOperator} `;
         secondOperand = ""
@@ -106,19 +106,39 @@ function updateDisplayText(isError=false) {
 //Allow keyboard input for backspace to remove last input and numbers and operators for same as click functions
 document.addEventListener("keydown", function(event) {
     if (event.key === "Backspace") {
-        if (firstOperand && operator && secondOperand) {
-            secondOperand = secondOperand.slice(0, -1)
-        }
-        else if (firstOperand && operator) {
-            operator = ""
-        }
-        else if (firstOperand) {
-            firstOperand = firstOperand.slice(0, -1)
-        }
-        updateDisplayText()
+        handleBackSpace()
     }
+    else if (!isNaN(event.key)) {
+        handleNumbers(event.key)
+    }
+    updateDisplayText()
 })
+
+function handleBackSpace() {
+    if (firstOperand && operator && secondOperand) {
+        secondOperand = secondOperand.slice(0, -1)
+    }
+    else if (firstOperand && operator) {
+        operator = ""
+    }
+    else if (firstOperand) {
+        firstOperand = firstOperand.slice(0, -1)
+    }
+}
+
+function handleNumbers(num) {
+    if (!operator) {
+        firstOperand += num
+    }
+    else if (firstOperand && operator) {
+        secondOperand += num
+    }
+}
 
 
 //Possible tasks
 //keyboardd support
+    //Operators
+    //Clear
+    //Decimal
+    //Equal
