@@ -8,10 +8,10 @@ let firstOperand = "";
 let secondOperand = "";
 let operator = "";
 
-const add = (num1, num2) => num1 + num2;
-const subtract = (num1, num2) => num1 - num2;
-const multiply = (num1, num2) => num1 * num2;
-const divide = (num1, num2) => (num2 === 0 ? (updateDisplayText(true),null) : num1 / num2);
+const add = (num1, num2) => Math.round((num1 + num2) * 100) / 100;
+const subtract = (num1, num2) => Math.round((num1 - num2) * 100) / 100;
+const multiply = (num1, num2) => Math.round((num1 * num2) * 100) / 100;
+const divide = (num1, num2) => (num2 === 0 ? (updateDisplayText(true),null) : Math.round((num1 / num2) * 100) / 100);
 
 function operate(num1, operator, num2) {
     num1 = parseFloat(num1)
@@ -19,13 +19,13 @@ function operate(num1, operator, num2) {
 
     switch(operator) {
         case "+" :
-            return Math.round(add(num1, num2) * 100) / 100;
+            return add(num1, num2);
         case "-":
-            return Math.round(subtract(num1, num2) * 100) / 100;
+            return subtract(num1, num2);
         case "*":
-            return Math.round(multiply(num1, num2) * 100) / 100;
+            return multiply(num1, num2);
         case "/":
-            return Math.round(divide(num1, num2) * 100) / 100;
+            return divide(num1, num2);
         default :
             return "Invalid Operator"
     }
@@ -86,17 +86,28 @@ function resetCurrentEquation(operand=null, newOperator=null) {
 
 function updateDisplayText(isError=false) {
     if (isError) {
-        calculatorDisplayText.textContent = "800813";
-        console.log("ERROR: Dividing by 0")
+        calculatorDisplayText.textContent = "8008135";
     } else {
         calculatorDisplayText.textContent = `${firstOperand} ${operator} ${secondOperand}`;
     }
 }
 
+//Allow user to press backspace key to undo last input
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Backspace") {
+        if (firstOperand && operator && secondOperand) {
+            secondOperand = secondOperand.slice(0, -1)
+        }
+        else if (firstOperand && operator) {
+            operator = ""
+        }
+        else if (firstOperand) {
+            firstOperand = firstOperand.slice(0, -1)
+        }
+        updateDisplayText()
+    }
+})
 
-//TODO
-//Round result to 2 decimal places
 
 //Possible tasks
 //keyboardd support
-//backspace 
