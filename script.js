@@ -11,7 +11,7 @@ let operator = "";
 const add = (num1, num2) => num1 + num2;
 const subtract = (num1, num2) => num1 - num2;
 const multiply = (num1, num2) => num1 * num2;
-const divide = (num1, num2) => num1 / num2;
+const divide = (num1, num2) => (num2 === 0 ? (updateDisplayText(true),null) : num1 / num2);
 
 function operate(num1, operator, num2) {
     num1 = parseInt(num1)
@@ -63,15 +63,17 @@ operatorButtons.forEach((button) => {
 //Solves equation when = button is clicked
 equalButton.addEventListener("click", () => {
     if (firstOperand && operator && secondOperand) {
-        result = operate(firstOperand, operator, secondOperand);
-        calculatorDisplayText.textContent = result;
+        let result = operate(firstOperand, operator, secondOperand);
+        if (result !== null){
+            calculatorDisplayText.textContent = result;
+        }
     }
 })
 
 //Clear current equation by removing display text and resetting the operands and operator
 clearButton.addEventListener("click", () => {
-    calculatorDisplayText.textContent = "";
     firstOperand = operator = secondOperand = "";
+    updateDisplayText()
 })
 
 //Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
@@ -82,15 +84,19 @@ function resetCurrentEquation(operand=null, newOperator=null) {
     }
 }
 
-function updateDisplayText() {
-    calculatorDisplayText.textContent = `${firstOperand} ${operator} ${secondOperand}`;
+function updateDisplayText(isError=false) {
+    if (isError) {
+        calculatorDisplayText.textContent = "800813";
+        console.log("ERROR: Dividing by 0")
+    } else {
+        calculatorDisplayText.textContent = `${firstOperand} ${operator} ${secondOperand}`;
+    }
 }
 
 
 //TODO
-//Make divide function not be disible by 0
-//Round total to 2 decimal places
+//Round result to 2 decimal places
 
-//Possible taska
+//Possible tasks
 //keyboardd support
 //backspace 
