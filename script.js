@@ -111,6 +111,12 @@ document.addEventListener("keydown", function(event) {
     else if (!isNaN(event.key)) {
         handleNumbers(event.key)
     }
+    else if (["+", "-", "*", "/"].includes(event.key)) {
+        handleOperator(event.key)
+    }
+    else if(event.key === "=" || event.key === "Enter") {
+        console.log("Equal")
+    }
     updateDisplayText()
 })
 
@@ -126,19 +132,35 @@ function handleBackSpace() {
     }
 }
 
-function handleNumbers(num) {
+function handleNumbers(numKey) {
     if (!operator) {
-        firstOperand += num
+        firstOperand += numKey
     }
     else if (firstOperand && operator) {
-        secondOperand += num
+        secondOperand += numKey
     }
 }
+
+function handleOperator(operatorKey) {
+    if (!operator) {
+        operator = operatorKey;
+    }
+    else {
+        firstOperand = operate(firstOperand, operator, secondOperand)
+        operator = operatorKey
+        handleChainOperation(firstOperand, operator)
+    }
+}
+
+//TODO
+//Fix double operator input causing error
 
 
 //Possible tasks
 //keyboardd support
-    //Operators
+    //Equal
     //Clear
     //Decimal
-    //Equal
+
+//Display font
+
