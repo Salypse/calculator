@@ -3,7 +3,7 @@ const numberButtons = document.querySelectorAll(".number-button")
 const operatorButtons = document.querySelectorAll(".operator-button")
 const clearButton = document.querySelector("#calculator-clear")
 const equalButton = document.querySelector("#calculator-equal")
-const pointButton = document.querySelector("#calculator-point")
+const decimalButton = document.querySelector("#calculator-point")
 
 let firstOperand = "";
 let secondOperand = "";
@@ -71,14 +71,8 @@ clearButton.addEventListener("click", () => {
 })
 
 //Adds a decimal to a number
-pointButton.addEventListener("click", () => {
-    if (!firstOperand.includes(".") && !operator) {
-        firstOperand += "."
-    }
-    else if(operator && !secondOperand.includes(".")) {
-        secondOperand += "."
-    }
-    updateDisplayText()
+decimalButton.addEventListener("click", () => {
+    handleDecimal()
 })
 
 //Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
@@ -113,6 +107,9 @@ document.addEventListener("keydown", function(event) {
     }
     else if(["c", "C"].includes(event.key)) {
         handleClear()
+    }
+    else if(event.key === ".") {
+        handleDecimal()
     }
     updateDisplayText()
 })
@@ -159,6 +156,16 @@ function handleEqual() {
 
 function handleClear() {
     firstOperand = operator = secondOperand = "";
+    updateDisplayText()
+}
+
+function handleDecimal() {
+    if (!firstOperand.includes(".") && !operator) {
+        firstOperand += "."
+    }
+    else if(operator && !secondOperand.includes(".")) {
+        secondOperand += "."
+    }
     updateDisplayText()
 }
 
