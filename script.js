@@ -162,9 +162,6 @@ function handleChainOperation(operand=null, newOperator=null) {
     }
 }
 
-//TODO
-//Fix double operator input causing error
-//Change calculator to fit all buttons
 
 //Possible tasks
 //Display font
