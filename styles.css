@@ -66,17 +66,23 @@ p {
     justify-content: flex-end;
     align-items: center;
 
+    font-family: "digital-7", monospace;
     color: #30a398;
     font-size: 48px;
     font-weight: 700;
 
     width: 100%;
     height: auto;
-
     margin: 16px;
 }
 
 #calculator-clear {
     width: 500px;
     height: 75px;
+}
+
+
+@font-face {
+    font-family: "digital-7";
+    src: url("./fonts/digital-7.ttf");
 }
