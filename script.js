@@ -12,7 +12,7 @@ let operator = "";
 const add = (num1, num2) => Math.round((num1 + num2) * 100) / 100;
 const subtract = (num1, num2) => Math.round((num1 - num2) * 100) / 100;
 const multiply = (num1, num2) => Math.round((num1 * num2) * 100) / 100;
-const divide = (num1, num2) => (num2 === 0 ? (updateDisplayText(true),null) : Math.round((num1 / num2) * 100) / 100);
+const divide = (num1, num2) => (num2 === 0 ? null: Math.round((num1 / num2) * 100) / 100);
 
 function operate(num1, operator, num2) {
     num1 = parseFloat(num1)
@@ -36,7 +36,6 @@ function operate(num1, operator, num2) {
 numberButtons.forEach((button) => {
     button.addEventListener("click", () => {
         handleNumbers(button.textContent)
-        updateDisplayText()
     })
 })
 
@@ -44,26 +43,22 @@ numberButtons.forEach((button) => {
 operatorButtons.forEach((button) => {
     button.addEventListener("click", () => {
         handleOperator(button.textContent)
-        updateDisplayText()
     })
 })
 
 //Solves equation when = button is clicked
 equalButton.addEventListener("click", () => {
     handleEqual()
-    updateDisplayText()
 })
 
 //Clear current equation by removing display text and resetting the operands and operator
 clearButton.addEventListener("click", () => {
     handleClear()
-    updateDisplayText()
 })
 
 //Adds a decimal to a number
 decimalButton.addEventListener("click", () => {
     handleDecimal()
-    updateDisplayText()
 })
 
 function updateDisplayText(isError=false) {
@@ -94,7 +89,6 @@ document.addEventListener("keydown", function(event) {
     else if(event.key === ".") {
         handleDecimal()
     }
-    updateDisplayText()
 })
 
 function handleBackSpace() {
@@ -107,6 +101,7 @@ function handleBackSpace() {
     else if (firstOperand) {
         firstOperand = firstOperand.slice(0, -1)
     }
+    updateDisplayText()
 }
 
 function handleNumbers(num) {
@@ -116,6 +111,7 @@ function handleNumbers(num) {
     else if (firstOperand && operator) {
         secondOperand += num
     }
+    updateDisplayText()
 }
 
 function handleOperator(operatorKey) {
@@ -127,17 +123,27 @@ function handleOperator(operatorKey) {
         operator = operatorKey
         handleChainOperation(firstOperand, operator)
     }
+    updateDisplayText()
 }
 
 function handleEqual() {
     if (secondOperand) {
-        firstOperand = operate(firstOperand, operator, secondOperand);
-        secondOperand = operator = ""
+        let result = operate(firstOperand, operator, secondOperand);
+        if (result === null) {
+            updateDisplayText(true)
+            firstOperand = operator = secondOperand = ""
+        }
+        else {
+            firstOperand = result
+            calculatorDisplayText.textContent = firstOperand
+            operator = secondOperand = ""
+        }
     }
 }
 
 function handleClear() {
     firstOperand = operator = secondOperand = "";
+    updateDisplayText()
 }
 
 function handleDecimal() {
@@ -152,6 +158,7 @@ function handleDecimal() {
     else if(operator && !secondOperand.includes(".")) {
         secondOperand += "."
     }
+    updateDisplayText()
 }
 
 //Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
@@ -160,9 +167,6 @@ function handleChainOperation(operand=null, newOperator=null) {
         calculatorDisplayText.textContent = `${operand} ${newOperator} `;
         secondOperand = ""
     }
+    updateDisplayText()
 }
-
-
-//Possible tasks
-//Display font
 
