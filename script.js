@@ -7,7 +7,7 @@ const decimalButton = document.querySelector("#calculator-point")
 
 let firstOperand = "";
 let secondOperand = "";
-let operator = "";
+let operator = null;
 
 const add = (num1, num2) => Math.round((num1 + num2) * 100) / 100;
 const subtract = (num1, num2) => Math.round((num1 - num2) * 100) / 100;
@@ -35,12 +35,7 @@ function operate(num1, operator, num2) {
 //Sets first or second operator based on number button clicked
 numberButtons.forEach((button) => {
     button.addEventListener("click", () => {
-        if (!operator) {
-            firstOperand += button.textContent;
-        } 
-        else if (operator) {
-            secondOperand += button.textContent;
-        }
+        handleNumbers(button.textContent)
         updateDisplayText()
     })
 })
@@ -48,40 +43,28 @@ numberButtons.forEach((button) => {
 //Sets operator with whatever button is clicked
 operatorButtons.forEach((button) => {
     button.addEventListener("click", () => {
-        if (!operator) {
-            operator = button.textContent;
-            updateDisplayText()
-        }
-        else if (operator) {
-            firstOperand = operate(firstOperand, operator, secondOperand)
-            operator = button.textContent
-            handleChainOperation(firstOperand, operator)
-        }
+        handleOperator(button.textContent)
+        updateDisplayText()
     })
 })
 
 //Solves equation when = button is clicked
 equalButton.addEventListener("click", () => {
     handleEqual()
+    updateDisplayText()
 })
 
 //Clear current equation by removing display text and resetting the operands and operator
 clearButton.addEventListener("click", () => {
     handleClear()
+    updateDisplayText()
 })
 
 //Adds a decimal to a number
 decimalButton.addEventListener("click", () => {
     handleDecimal()
+    updateDisplayText()
 })
-
-//Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
-function handleChainOperation(operand=null, newOperator=null) {
-    if (operand && newOperator) {
-        calculatorDisplayText.textContent = `${operand} ${newOperator} `;
-        secondOperand = ""
-    }
-}
 
 function updateDisplayText(isError=false) {
     if (isError) {
@@ -150,23 +133,33 @@ function handleEqual() {
     if (secondOperand) {
         firstOperand = operate(firstOperand, operator, secondOperand);
         secondOperand = operator = ""
-        updateDisplayText()
     }
 }
 
 function handleClear() {
     firstOperand = operator = secondOperand = "";
-    updateDisplayText()
 }
 
 function handleDecimal() {
+    if (typeof(firstOperand) !== "string") {
+        firstOperand = firstOperand.toString()
+        console.log(typeof(firstOperand))
+    }
+
     if (!firstOperand.includes(".") && !operator) {
         firstOperand += "."
     }
     else if(operator && !secondOperand.includes(".")) {
         secondOperand += "."
     }
-    updateDisplayText()
+}
+
+//Allows operator chaining (ex: 4 + 4, then press * to make equation 8 * )
+function handleChainOperation(operand=null, newOperator=null) {
+    if (operand && newOperator) {
+        calculatorDisplayText.textContent = `${operand} ${newOperator} `;
+        secondOperand = ""
+    }
 }
 
 //TODO
@@ -174,9 +167,5 @@ function handleDecimal() {
 //Restructure code with new functions
 
 //Possible tasks
-//keyboardd support
-    //Clear
-    //Decimal
-
 //Display font
 
