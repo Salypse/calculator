@@ -62,12 +62,7 @@ operatorButtons.forEach((button) => {
 
 //Solves equation when = button is clicked
 equalButton.addEventListener("click", () => {
-    if (secondOperand) {
-        let result = operate(firstOperand, operator, secondOperand);
-        if (result !== null){
-            calculatorDisplayText.textContent = result;
-        }
-    }
+    handleEqual()
 })
 
 //Clear current equation by removing display text and resetting the operands and operator
@@ -114,8 +109,8 @@ document.addEventListener("keydown", function(event) {
     else if (["+", "-", "*", "/"].includes(event.key)) {
         handleOperator(event.key)
     }
-    else if(event.key === "=" || event.key === "Enter") {
-        console.log("Equal")
+    else if(["=", "Enter"].includes(event.key)) {
+        handleEqual()
     }
     updateDisplayText()
 })
@@ -132,12 +127,12 @@ function handleBackSpace() {
     }
 }
 
-function handleNumbers(numKey) {
+function handleNumbers(num) {
     if (!operator) {
-        firstOperand += numKey
+        firstOperand += num
     }
     else if (firstOperand && operator) {
-        secondOperand += numKey
+        secondOperand += num
     }
 }
 
@@ -149,6 +144,14 @@ function handleOperator(operatorKey) {
         firstOperand = operate(firstOperand, operator, secondOperand)
         operator = operatorKey
         handleChainOperation(firstOperand, operator)
+    }
+}
+
+function handleEqual() {
+    if (secondOperand) {
+        firstOperand = operate(firstOperand, operator, secondOperand);
+        secondOperand = operator = ""
+        updateDisplayText()
     }
 }
 
