@@ -67,8 +67,7 @@ equalButton.addEventListener("click", () => {
 
 //Clear current equation by removing display text and resetting the operands and operator
 clearButton.addEventListener("click", () => {
-    firstOperand = operator = secondOperand = "";
-    updateDisplayText()
+    handleClear()
 })
 
 //Adds a decimal to a number
@@ -111,6 +110,9 @@ document.addEventListener("keydown", function(event) {
     }
     else if(["=", "Enter"].includes(event.key)) {
         handleEqual()
+    }
+    else if(["c", "C"].includes(event.key)) {
+        handleClear()
     }
     updateDisplayText()
 })
@@ -155,13 +157,17 @@ function handleEqual() {
     }
 }
 
+function handleClear() {
+    firstOperand = operator = secondOperand = "";
+    updateDisplayText()
+}
+
 //TODO
 //Fix double operator input causing error
-
+//Restructure code with new functions
 
 //Possible tasks
 //keyboardd support
-    //Equal
     //Clear
     //Decimal
 
