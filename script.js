@@ -7,7 +7,7 @@ const decimalButton = document.querySelector("#calculator-point")
 
 let firstOperand = "";
 let secondOperand = "";
-let operator = null;
+let operator = "";
 
 const add = (num1, num2) => Math.round((num1 + num2) * 100) / 100;
 const subtract = (num1, num2) => Math.round((num1 - num2) * 100) / 100;
@@ -122,7 +122,7 @@ function handleOperator(operatorKey) {
     if (!operator) {
         operator = operatorKey;
     }
-    else {
+    else if (operator && secondOperand) {
         firstOperand = operate(firstOperand, operator, secondOperand)
         operator = operatorKey
         handleChainOperation(firstOperand, operator)
@@ -164,7 +164,7 @@ function handleChainOperation(operand=null, newOperator=null) {
 
 //TODO
 //Fix double operator input causing error
-//Restructure code with new functions
+//Change calculator to fit all buttons
 
 //Possible tasks
 //Display font
